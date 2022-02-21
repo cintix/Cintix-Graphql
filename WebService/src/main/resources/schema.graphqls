@@ -1,0 +1,49 @@
+
+type Query {
+    event(id: ID!): LiveEvent
+    events: [LiveEvent]
+    episode(id: ID!): Episode
+    episodes: [Episode]
+    collection: Collection
+    list(first: Int, after: String): EpisodeConnection
+}
+
+type EpisodeConnection {
+    edges: [EpisodeEdge]
+    pageInfo: PageInfo
+}
+
+type EpisodeEdge {
+    cursor: String
+    node: Episode
+}
+
+type PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+interface Program {
+	id: ID!
+	title: String
+	description: String
+}
+
+type Episode implements Program {
+	id: ID!
+	title: String
+	description: String
+	createdAt: String
+}
+
+
+type LiveEvent implements Program {
+	id: ID!
+	title: String
+	description: String
+	location: String
+}
+
+type Collection {
+	episodes: [Episode]
+}
