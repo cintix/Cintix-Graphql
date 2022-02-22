@@ -49,15 +49,27 @@ public class Query implements GraphQLQueryResolver {
         return repository.getEpisodes();
     }
 
-    public Connection<Episode> list(int first, String after, DataFetchingEnvironment env) {  
-        String cursorID = new String(Base64.getDecoder().decode(after));
-        System.out.println("cursorID : " + cursorID);
-        
+    public Connection<Episode> list(int first, String after, DataFetchingEnvironment env) {
+        if (after != null && !after.isEmpty()) {
+            String cursorID = new String(Base64.getDecoder().decode(after));
+            System.out.println("cursorID : " + cursorID);
+        }
         List<Episode> episodes = new ArrayList<>();
         episodes.addAll(repository.getEpisodes());
-        episodes.addAll(repository.getCollection().episodes);   
-        
+        episodes.addAll(repository.getCollection().episodes);
+
         return new SimpleListConnection<>(episodes).get(env);
+    }
+
+    public ExtendedConnection<Program> friends(int first, String after, DataFetchingEnvironment env) {
+        if (after != null && !after.isEmpty()) {
+            String cursorID = new String(Base64.getDecoder().decode(after));
+            System.out.println("cursorID : " + cursorID);
+        }
+        List<Program> episodes = new ArrayList<>();
+        episodes.addAll(repository.getFriends().episodes);
+
+        return new ExtendedSimpleListConnection<Program>(episodes).get(env);
     }
 
 }

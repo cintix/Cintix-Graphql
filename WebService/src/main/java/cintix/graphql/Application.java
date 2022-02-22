@@ -3,7 +3,6 @@
  */
 package cintix.graphql;
 
-import dk.cintix.application.server.rest.http.RestHttpServer;
 import cintix.graphql.service.programs.Mutation;
 import cintix.graphql.service.programs.Query;
 
@@ -12,11 +11,8 @@ import graphql.kickstart.tools.SchemaParser;
 import graphql.schema.GraphQLSchema;
 
 import graphql.ExecutionResult;
-import java.net.InetSocketAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Application extends RestHttpServer {
+public class Application {
 
     public Application() {
 
@@ -47,18 +43,6 @@ public class Application extends RestHttpServer {
         System.out.println(executionResult.toSpecification());
 
         executionResult = graphQL.execute("{"
-                + "  collection { "
-                + "     episodes {"
-                + "       id"
-                + "       title "
-                + "       description "
-                + "     }"
-                + "  }"
-                + "}");
-        System.out.println("Query result: ");
-        System.out.println(executionResult.toSpecification());
-
-        executionResult = graphQL.execute("{"
                 + "  list(first: 10) { "
                 + "        edges {\n"
                 + "            node {\n"
@@ -74,13 +58,27 @@ public class Application extends RestHttpServer {
                 + "}");
         System.out.println("Query result: ");
         System.out.println(executionResult.toSpecification());
+      
+        
+        
+        executionResult = graphQL.execute("{"
+                + "  friends(first: 5) { "
+                + "        totalCount\n"
+                + "        edges {\n"
+                + "            node {\n"
+                + "               title\n"
+                + "            }"
+                + "            cursor\n"
+                + "        }"
+                + "        pageInfo {"
+                + "           hasPreviousPage"
+                + "           hasNextPage"
+                + "        }"
+                + "  }"
+                + "}");
+        System.out.println("Query result: ");
+        System.out.println(executionResult.toSpecification());
 
-        try {
-            bind(new InetSocketAddress(9090));
-            //    startServer();
-        } catch (Exception ex) {
-            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public static void main(String[] args) {

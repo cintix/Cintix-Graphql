@@ -48,6 +48,12 @@ public class ProgramRepository {
 
     }
 
+    public Collection getFriends() {
+        return friends;
+    }
+    
+    
+
     public Collection getCollection() {
         return friends;
     }
