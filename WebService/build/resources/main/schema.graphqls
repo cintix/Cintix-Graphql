@@ -5,8 +5,20 @@ type Query {
     episode(id: ID!): Episode
     episodes: [Episode]
     collection: Collection
-    list(first: Int, after: String): EpisodeConnection @connection(for: "Episode")
+    list(first: Int, after: String): EpisodeConnection
     friends(first: Int, after: String): ExtendedSimpleListConnection
+    people(first: Int, after: String): ExtendedSimpleListConnection
+}
+
+type EpisodeConnection {
+    totalCount: Int!
+    edges:[EpisodeEdge]
+    pageInfo: PageInfo     
+}
+
+type EpisodeEdge {
+    node: Episode
+    cursor: String
 }
 
 

@@ -23,6 +23,7 @@ public class Application {
                 .makeExecutableSchema();
 
         GraphQL graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+        System.out.println("======================================= EPISODE  ======================================= ");
         ExecutionResult executionResult = graphQL.execute("{"
                 + "  episode (id: 5) { id"
                 + "           title "
@@ -32,6 +33,7 @@ public class Application {
 
         System.out.println("Query result: ");
         System.out.println(executionResult.toSpecification());
+        System.out.println("======================================= EVENTS ======================================= ");
         executionResult = graphQL.execute("{"
                 + "  events { id"
                 + "           title "
@@ -42,8 +44,10 @@ public class Application {
         System.out.println("Query result: ");
         System.out.println(executionResult.toSpecification());
 
+        System.out.println("======================================= LIST ======================================= ");
         executionResult = graphQL.execute("{"
                 + "  list(first: 10) { "
+                + "        totalCount\n"
                 + "        edges {\n"
                 + "            node {\n"
                 + "               title\n"
@@ -58,9 +62,8 @@ public class Application {
                 + "}");
         System.out.println("Query result: ");
         System.out.println(executionResult.toSpecification());
-      
-        
-        
+
+        System.out.println("======================================= Friends ======================================= ");
         executionResult = graphQL.execute("{"
                 + "  friends(first: 5) { "
                 + "        totalCount\n"
@@ -79,6 +82,25 @@ public class Application {
         System.out.println("Query result: ");
         System.out.println(executionResult.toSpecification());
 
+        System.out.println("======================================= PEOPLE ======================================= ");
+        executionResult = graphQL.execute("{"
+                + "  people(first: 15) { "
+                + "        totalCount\n"
+                + "        edges {\n"
+                + "            node {\n"
+                + "               id\n"
+                + "               title\n"
+                + "            }"
+                + "            cursor\n"
+                + "        }"
+                + "        pageInfo {"
+                + "           hasPreviousPage"
+                + "           hasNextPage"
+                + "        }"
+                + "  }"
+                + "}");
+        System.out.println("Query result: ");
+        System.out.println(executionResult.toSpecification());
     }
 
     public static void main(String[] args) {

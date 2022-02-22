@@ -49,7 +49,7 @@ public class Query implements GraphQLQueryResolver {
         return repository.getEpisodes();
     }
 
-    public Connection<Episode> list(int first, String after, DataFetchingEnvironment env) {
+    public ExtendedConnection<Episode> list(int first, String after, DataFetchingEnvironment env) {
         if (after != null && !after.isEmpty()) {
             String cursorID = new String(Base64.getDecoder().decode(after));
             System.out.println("cursorID : " + cursorID);
@@ -58,7 +58,7 @@ public class Query implements GraphQLQueryResolver {
         episodes.addAll(repository.getEpisodes());
         episodes.addAll(repository.getCollection().episodes);
 
-        return new SimpleListConnection<>(episodes).get(env);
+        return new ExtendedSimpleListConnection<>(episodes).get(env);
     }
 
     public ExtendedConnection<Program> friends(int first, String after, DataFetchingEnvironment env) {
@@ -72,4 +72,14 @@ public class Query implements GraphQLQueryResolver {
         return new ExtendedSimpleListConnection<Program>(episodes).get(env);
     }
 
+    public ExtendedConnection<Program> people(int first, String after, DataFetchingEnvironment env) {
+        if (after != null && !after.isEmpty()) {
+            String cursorID = new String(Base64.getDecoder().decode(after));
+            System.out.println("cursorID : " + cursorID);
+        }
+        List<Program> episodes = new ArrayList<>();
+        episodes.addAll(repository.getFriends().episodes);
+
+        return new ExtendedSimpleListConnection<Program>(episodes).get(env);
+    }
 }
